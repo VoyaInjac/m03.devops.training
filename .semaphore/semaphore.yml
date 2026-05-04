@@ -2,8 +2,10 @@ version: v1.0
 name: Continuous Integration Pipeline
 agent:
   machine:
-    type: e1-standard-2
-    os_image: ubuntu2004
+    type: f1-standard-2
+  containers:
+    - name: main
+      image: registry.semaphoreci.com/python:3.12.1
 
 blocks:
   - name: Code signing
