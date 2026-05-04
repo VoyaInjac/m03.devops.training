@@ -1,0 +1,72 @@
+version: v1.0
+name: Continuous Integration Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+
+blocks:
+  - name: Code signing
+    task:
+      secrets:
+        - name: gpg-keys
+      jobs:
+        - name: sign
+          commands:
+            - checkout
+            - gpg --import /root/public.key
+            - gpg --import /root/private.key
+            - gpg --output 1-signing/artifact.txt.sig --detach-sign 1-signing/artifact.txt
+            - gpg --verify 1-signing/artifact.txt.sig 1-signing/artifact.txt
+            - artifact push job 1-signing/artifact.txt.sig
+
+  - name: SBOM
+    task:
+      prologue:
+        commands:
+          - checkout
+          - pip install cyclonedx-bom
+      jobs:
+        - name: Cyclonedx
+          commands:
+            - cd 2-sbom
+            - cyclonedx-py requirements -o bom.json
+            - artifact push job 2-sbom/bom.json
+
+  - name: Audit dependencies
+    task:
+      prologue:
+        commands:
+          - checkout
+          - pip install pip-audit
+      jobs:
+        - name: pip audit
+          commands:
+            - cd 3-dependency-scanning
+            - pip-audit -r requirements.txt || true
+
+  - name: SAST Scan
+    task:
+      prologue:
+        commands:
+          - checkout
+          - pip install bandit
+      jobs:
+        - name: Bandit
+          commands:
+            - cd 4-sast
+            - bandit -r vulnerable_script.py || true
+
+  - name: DAST Scan
+    task:
+      prologue:
+        commands:
+          - checkout
+          - pip install wapiti3 gunicorn flask
+      jobs:
+        - name: wapiti
+          commands:
+            - cd 5-dast
+            - gunicorn -b 0.0.0.0:4000 app:app --daemon
+            - wapiti -u http://localhost:4000 -f html || true
+            - artifact push job /root/.wapiti/generated_report

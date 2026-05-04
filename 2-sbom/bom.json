@@ -40,7 +40,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-03-23T18:20:51.423490+00:00",
+    "timestamp": "2026-05-04T07:48:57.247323+00:00",
     "tools": {
       "components": [
         {
@@ -83,13 +83,14 @@
           "licenses": [
             {
               "license": {
+                "acknowledgement": "declared",
                 "id": "Apache-2.0"
               }
             }
           ],
           "name": "cyclonedx-py",
           "type": "application",
-          "version": "5.3.0"
+          "version": "7.3.0"
         },
         {
           "description": "Python library for CycloneDX",
@@ -131,20 +132,21 @@
           "licenses": [
             {
               "license": {
+                "acknowledgement": "declared",
                 "id": "Apache-2.0"
               }
             }
           ],
           "name": "cyclonedx-python-lib",
           "type": "library",
-          "version": "9.1.0"
+          "version": "11.7.0"
         }
       ]
     }
   },
-  "serialNumber": "urn:uuid:b7bfeba0-12f9-47f9-90aa-8219ceea0809",
+  "serialNumber": "urn:uuid:908b5390-942b-4b58-8482-75f853490cc6",
   "version": 1,
-  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
-  "specVersion": "1.5"
+  "specVersion": "1.6"
 }
