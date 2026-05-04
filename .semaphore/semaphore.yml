@@ -18,6 +18,7 @@ blocks:
             - checkout
             - gpg --import /root/public.key
             - gpg --import /root/private.key
+            - rm -f 1-signing/artifact.txt.sig
             - gpg --output 1-signing/artifact.txt.sig --detach-sign 1-signing/artifact.txt
             - gpg --verify 1-signing/artifact.txt.sig 1-signing/artifact.txt
             - artifact push job 1-signing/artifact.txt.sig
