@@ -34,7 +34,7 @@ blocks:
           commands:
             - cd 2-sbom
             - cyclonedx-py requirements -o bom.json
-            - artifact push job 2-sbom/bom.json
+            - artifact push job bom.json
 
   - name: Audit dependencies
     task:
